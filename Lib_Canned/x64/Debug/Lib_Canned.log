@@ -1,0 +1,22 @@
+﻿  Lib_Canned.cpp
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(32,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(41,25): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(41,25): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(48,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(62,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(62,22): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(63,57): warning C4244: 'argument': conversion from 'float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(63,78): warning C4244: 'argument': conversion from 'const float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(85,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(51,8): warning C4101: 'height_A': unreferenced local variable
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(154,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(155,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Lib_Canned.vcxproj -> C:\Users\User\Desktop\mydev\Lib_Canned\x64\Debug\Lib_Canned.exe
