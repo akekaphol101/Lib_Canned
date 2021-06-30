@@ -22,6 +22,7 @@ int mini_contour_index = 0;
 void show_histogram(string const& name, Mat1b const& image)
 {
 	float max = 0;
+	float min = 5000;
 	for (int i = 0; i < image.cols; i++)
 	{
 		int column_sum = 0;
@@ -30,10 +31,17 @@ void show_histogram(string const& name, Mat1b const& image)
 			column_sum += image.at<unsigned char>(k, i);
 			if (column_sum > max) {
 				max = column_sum;
+				//cout << "Max " << max << endl;
+			}
+			if (column_sum < min) {
+				min = column_sum;
+				//cout << "Min " << min << endl;
+				
 			}
 		}
 	}
-	//cout << "Max " << max  << endl;
+	
+	
 
 	// Set histogram bins count
 	int bins = image.cols;
@@ -47,6 +55,8 @@ void show_histogram(string const& name, Mat1b const& image)
 	float const hist_height = maxN;
 	Mat3b hist_image = Mat3b::zeros(hist_height + 10, bins + 20);
 
+	int col_low = 0;
+	float height_low = 200;
 	int countA = 0;
 	float height_A[630];
 	Mat dst;
@@ -62,8 +72,45 @@ void show_histogram(string const& name, Mat1b const& image)
 		float const height = cvRound(column_sum * hist_height / max);
 		line(hist_image, Point(i + 10, (hist_height - height) + 50), Point(i + 10, hist_height), Scalar::all(255));
 
-		//cout << "AAA " << hist_height - height << endl;
+		// Check Low graph
+		if (height < height_low) {
+			height_low = height;
+			col_low = i;
+
+		}
+
+		
 	}
+
+	float H_AVG = 0;
+	for (int i = 0; i < image.cols; i++)
+	{
+		float column_sum = 0;
+
+		for (int k = 0; k < image.rows; k++)
+		{
+			column_sum += image.at<unsigned char>(k, i);
+		}
+
+		float const height = cvRound(column_sum * hist_height / max);
+
+		if (i >= (col_low-7) && i < (col_low + 6))
+		{
+			cout << "H--" << height << endl;
+			H_AVG += height;
+
+			
+		}
+	}
+	H_AVG = H_AVG / 13;
+	float H_Minus = H_AVG - height_low;
+
+	cout << "H_AVG____" << H_AVG << endl;
+	cout << "low " << height_low << endl;
+	cout << "H_AVG-------Minus " << H_Minus << endl;
+	cout << "locate low " << col_low << endl;
+
+
 
 	Mat canny_output;
 	Canny(hist_image, canny_output, 50, 50 * 2);
@@ -84,7 +131,7 @@ void show_histogram(string const& name, Mat1b const& image)
 	float reN = 0;
 	reN = contourArea(hull[0]) - contourArea(contours[0]);
 	//cout << " Result: " << reN << endl;
-	if (reN > 660) {
+	if (H_Minus > 5) {
 		cout << " Defect Detection  " << endl;
 		cout << "===================" << endl;
 	}
@@ -168,7 +215,7 @@ int main(int argc, const char* argv[]) {
 		// Draw circle for show Edge of lib
 		circle(imgRz, centers[largest_contour_index], (int)radius[largest_contour_index] + 120, Scalar(0, 0, 0), 215);
 		circle(imgRz, centers[largest_contour_index], (int)radius[largest_contour_index] - 18, Scalar(0, 0, 0), FILLED);
-		imshow("1", imgRz);
+		//imshow("1", imgRz);
 
 		//Show Threshold edge of lib
 		cvtColor(imgRz, imgMr, COLOR_BGR2GRAY);
