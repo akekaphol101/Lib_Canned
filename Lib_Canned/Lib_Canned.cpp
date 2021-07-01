@@ -60,6 +60,8 @@ void show_histogram(string const& name, Mat1b const& image)
 	int countA = 0;
 	float height_A[630];
 	Mat dst;
+
+	// Loop find Low and Locate Low
 	for (int i = 0; i < image.cols; i++)
 	{
 		float column_sum = 0;
@@ -83,6 +85,7 @@ void show_histogram(string const& name, Mat1b const& image)
 	}
 
 	float H_AVG = 0;
+	// Loop find Average low
 	for (int i = 0; i < image.cols; i++)
 	{
 		float column_sum = 0;
@@ -98,11 +101,10 @@ void show_histogram(string const& name, Mat1b const& image)
 		{
 			cout << "H--" << height << endl;
 			H_AVG += height;
-
 			
 		}
 	}
-	H_AVG = H_AVG / 13;
+	H_AVG = H_AVG / 13;			//best value for average 
 	float H_Minus = H_AVG - height_low;
 
 	cout << "H_AVG____" << H_AVG << endl;
@@ -235,25 +237,15 @@ int main(int argc, const char* argv[]) {
 		Rect myROI(380, 0, 130, 510);
 		Mat croppedRef(imgPoLin, myROI);
 		
-		Mat cropped;
+		Mat imgCrop;
 		// Copy the data into new matrix
-		croppedRef.copyTo(cropped);
-		imshow("REz", cropped);
-		rotate(cropped, cropped, ROTATE_90_COUNTERCLOCKWISE);
-		imshow("Rotate", cropped);
-		// New Threshold again
-		//cvtColor(cropped, cropped, COLOR_BGR2GRAY);
-		//blur(cropped, cropped, Size(3, 3));
-		//threshold(cropped, cropped, 100, 255, THRESH_BINARY_INV); //Threshold the gray.
+		croppedRef.copyTo(imgCrop);
+		imshow("REz", imgCrop);
+		rotate(imgCrop, imgCrop, ROTATE_90_COUNTERCLOCKWISE);
+		imshow("Rotate", imgCrop);
+	
 
-		show_histogram("Hist", cropped);
-
-		// No Threshold
-		//logPolar(imgMr, imgRePoLin, centers[largest_contour_index], M, INTER_LINEAR + WARP_FILL_OUTLIERS);
-		linearPolar(imgMr, imgRePoLog, centers[largest_contour_index], radius[largest_contour_index] + 5, INTER_LINEAR + WARP_FILL_OUTLIERS);
-		//imshow("re1", imgRePoLin);
-		//imshow("re2", imgRePoLog);
-
+		show_histogram("Hist", imgCrop);
 	
 		
 
