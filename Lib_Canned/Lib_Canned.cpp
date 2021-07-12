@@ -15,14 +15,15 @@ using namespace std::chrono;
 
 int largest_area = 0;
 int largest_contour_index = 0;
-int mini_area = 0;
-int mini_contour_index = 0;
 
+int P_backward = 7;		//Parameter for back column value size.
+int P_forward = 6;		//Parameter for next column value size.
+int P_divide = 13;		//Parameter for divide high average.
+int P_score = 5;		//Parameter for check crack lib.
 
 void show_histogram(string const& name, Mat1b const& image)
 {
 	float max = 0;
-	float min = 5000;
 	for (int i = 0; i < image.cols; i++)
 	{
 		int column_sum = 0;
@@ -33,15 +34,8 @@ void show_histogram(string const& name, Mat1b const& image)
 				max = column_sum;
 				//cout << "Max " << max << endl;
 			}
-			if (column_sum < min) {
-				min = column_sum;
-				//cout << "Min " << min << endl;
-
-			}
 		}
 	}
-
-
 
 	// Set histogram bins count
 	int bins = image.cols;
@@ -56,21 +50,16 @@ void show_histogram(string const& name, Mat1b const& image)
 	Mat3b hist_image = Mat3b::zeros(hist_height + 10, bins + 20);
 
 	int col_low = 0;
-	float height_low = 200;
-	int countA = 0;
-	float height_A[630];
-	Mat dst;
-
+	float height_low = 500;
+	
 	// Loop find Low and Locate Low
 	for (int i = 0; i < image.cols; i++)
 	{
 		float column_sum = 0;
-
 		for (int k = 0; k < image.rows; k++)
 		{
 			column_sum += image.at<unsigned char>(k, i);
 		}
-
 		float const height = cvRound(column_sum * hist_height / max);
 		line(hist_image, Point(i + 10, (hist_height - height) + 50), Point(i + 10, hist_height), Scalar::all(255));
 
@@ -78,42 +67,31 @@ void show_histogram(string const& name, Mat1b const& image)
 		if (height < height_low) {
 			height_low = height;
 			col_low = i;
-
 		}
-
 	}
-
 
 	float H_AVG = 0;
 	// Loop find Average low
 	for (int i = 0; i < image.cols; i++)
 	{
 		float column_sum = 0;
-
 		for (int k = 0; k < image.rows; k++)
 		{
 			column_sum += image.at<unsigned char>(k, i);
 		}
-
 		float const height = cvRound(column_sum * hist_height / max);
-
-		if (i >= (col_low - 7) && i < (col_low + 6))
+		if (i >= (col_low - P_backward) && i < (col_low + P_forward))
 		{
 			cout << "H--" << height << endl;
 			H_AVG += height;
-
 		}
 	}
-	H_AVG = H_AVG / 13;			//best value for average 
+	H_AVG = H_AVG / P_divide;					//best value for average 
 	float H_Minus = H_AVG - height_low;
-
 	cout << "H_AVG____" << H_AVG << endl;
 	cout << "low " << height_low << endl;
 	cout << "H_AVG-------Minus " << H_Minus << endl;
-	//cout << "locate low " << col_low << endl;
-
-
-
+	
 	Mat canny_output;
 	Canny(hist_image, canny_output, 50, 50 * 2);
 	vector<vector<Point> > contours;
@@ -127,13 +105,7 @@ void show_histogram(string const& name, Mat1b const& image)
 	}
 
 	drawContours(hist_image, contours, 0, Scalar(0, 0, 255), 2, 8, vector<Vec4i>(), 0, Point());
-	drawContours(hist_image, hull, 0, Scalar(0, 255, 0), 2, 8, vector<Vec4i>(), 0, Point());
-	cout << " AreaC: " << contourArea(contours[0]) << endl;
-	cout << " AreaH: " << contourArea(hull[0]) << endl;
-	float reN = 0;
-	reN = contourArea(hull[0]) - contourArea(contours[0]);
-	//cout << " Result: " << reN << endl;
-	if (H_Minus > 5) {
+	if (H_Minus > P_score) {
 		cout << " Defect Detection  " << endl;
 		cout << "===================" << endl;
 	}
@@ -151,15 +123,12 @@ void show_histogram(string const& name, Mat1b const& image)
 	auto stop = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(stop - start);
 	cout << "Time taken by function: " << duration.count() << " milliseconds" << endl;
-	//imshow(name, hist_image);
 }
-
 
 
 int Histogram_Calculate(Mat image) {
 	float max = 0;
-	float min = 5000;
-
+	//Find max column for create graph.
 	for (int i = 0; i < image.cols; i++)
 	{
 		int column_sum = 0;
@@ -170,17 +139,9 @@ int Histogram_Calculate(Mat image) {
 				max = column_sum;
 				//cout << "Max " << max << endl;
 			}
-			if (column_sum < min) {
-				min = column_sum;
-				//cout << "Min " << min << endl;
-
-			}
 		}
 	}
-
-
-
-	// Set histogram bins count
+	// Set histogram bins count.
 	int bins = image.cols;
 	// Set ranges for histogram bins
 	float lranges[] = { 0, bins };
@@ -193,80 +154,58 @@ int Histogram_Calculate(Mat image) {
 	Mat3b hist_image = Mat3b::zeros(hist_height + 10, bins + 20);
 
 	int col_low = 0;
-	float height_low = 200;
-	int countA = 0;
-	float height_A[630];
-	Mat dst;
-
+	float height_low = 500;
 	// Loop find Low and Locate Low
 	for (int i = 0; i < image.cols; i++)
 	{
 		float column_sum = 0;
-
 		for (int k = 0; k < image.rows; k++)
 		{
 			column_sum += image.at<unsigned char>(k, i);
 		}
-
 		float const height = cvRound(column_sum * hist_height / max);
-		line(hist_image, Point(i + 10, (hist_height - height) + 50), Point(i + 10, hist_height), Scalar::all(255));
-
 		// Check Low graph
 		if (height < height_low) {
 			height_low = height;
 			col_low = i;
 		}
 	}
-
 	cout << "Locate" << col_low << endl;
+	//Check locate Low value.
 	if (col_low < 100 || col_low >1500) {
 		return 0;
 	}
-
-
 	return 1;
 }
-
-
-
-
-
-
-
 
 
 int Polar_Function(Mat image, Point2f center, float radiused) {
 	Mat imgPoLin;
-
+	int YoN = 0;
 	linearPolar(image, imgPoLin, center, radiused + 10, INTER_LINEAR + WARP_FILL_OUTLIERS);
-	imshow("5", imgPoLin);
-
+	imshow("Polar image", imgPoLin);
 	Rect myROI(380, 0, 130, 510);
 	Mat croppedRef(imgPoLin, myROI);
-
 	Mat imgCrop;
 	// Copy the data into new matrix
 	croppedRef.copyTo(imgCrop);
-	imshow("REz", imgCrop);
-	rotate(imgCrop, imgCrop, ROTATE_90_COUNTERCLOCKWISE);
-	imshow("Rotate", imgCrop);
-
-	int YoN = 0;
-	YoN = Histogram_Calculate(imgCrop);
-	cout << "YoN" << YoN << endl;
+	imshow("Crop image", imgCrop);
+	rotate(imgCrop, imgCrop, ROTATE_90_COUNTERCLOCKWISE);  // Rotate for used in Histogram.
+	imshow("Rotate image", imgCrop);
+	YoN = Histogram_Calculate(imgCrop);    //Call function calculate for check image.
 	if (YoN == 0)
 	{
 		return YoN;
 	}
-	show_histogram("name", imgCrop);
+	show_histogram("name", imgCrop);		//Call function histogram final.
 	return 1;
-
-}
+	}
 
 
 
 int Center_Circle(Mat image, Mat imageOriginal) {
 	int NoY = 0;
+	Point2f center;
 	vector<vector<Point> > contours;
 	findContours(image, contours, RETR_CCOMP, CHAIN_APPROX_SIMPLE);
 	vector<vector<Point> > contours_poly(contours.size());
@@ -274,7 +213,6 @@ int Center_Circle(Mat image, Mat imageOriginal) {
 	vector<Point2f>centers(contours.size());
 	vector<float>radius(contours.size());
 	vector<Vec4i> hierarchy;
-
 
 	// Calculate find Area of circle
 	for (size_t i = 0; i < contours.size(); i++)
@@ -287,49 +225,34 @@ int Center_Circle(Mat image, Mat imageOriginal) {
 			largest_area = area;
 			largest_contour_index = i;               //Store the index of largest contour.
 		}
-		cout << area << endl;
-		cout << "----------------- " << endl;
+	 }
 
-	}
-
-	cout << largest_area << endl;
-	cout << "================== " << endl;
-	//cout << largest_contour_index << endl;
-	Mat testimg;
-	// Draw circle for show Edge of lib
+	// Draw circle for show Edge of lib.
 	circle(imageOriginal, centers[largest_contour_index], (int)radius[largest_contour_index] + 120, Scalar(0, 0, 0), 215);
 	circle(imageOriginal, centers[largest_contour_index], (int)radius[largest_contour_index] - 18, Scalar(0, 0, 0), FILLED);
-
-	imshow("2", imageOriginal);
-	linearPolar(imageOriginal, testimg, centers[largest_contour_index], radius[largest_contour_index] + 10, INTER_LINEAR + WARP_FILL_OUTLIERS);
-	imshow("testimg", testimg);
-
-	Point2f cen;
-	cen = centers.at(largest_contour_index);
+	imshow("Original image", imageOriginal);
+	
+	center = centers.at(largest_contour_index);
 	// Call Function make polar
-	NoY = Polar_Function(imageOriginal, cen, radius[largest_contour_index]);
-
-	largest_area = 0;
+	NoY = Polar_Function(imageOriginal, center, radius[largest_contour_index]);
+	largest_area = 0;  // Reset size of area.
 	return NoY;
+	}
 
-}
-
-int Recheck(Mat imageOriginal) {
+int Canned_Lib(Mat imageOriginal) {
 	Mat imgG, imgCanny, imgRz;
 	int status = 0;
-	imgRz = imageOriginal.clone();
+	imgRz = imageOriginal.clone();		//Copy image to imgRz.
 	cvtColor(imgRz, imgG, COLOR_BGR2GRAY);
 	blur(imgG, imgG, Size(3, 3));
-	//threshold(imgG, imgTh, 120, 255, THRESH_BINARY); //Threshold the gray.
 	Canny(imgG, imgCanny, 300, 550);
-	status = Center_Circle(imgCanny, imageOriginal);
+	status = Center_Circle(imgCanny, imageOriginal); //Call function for find circle and draw.
 
-	if (status == 0)
+	if (status == 0)	
 	{
 		rotate(imageOriginal, imageOriginal, ROTATE_90_CLOCKWISE);
 		cvtColor(imageOriginal, imgG, COLOR_BGR2GRAY);
 		blur(imgG, imgG, Size(3, 3));
-		//threshold(imgG, imgTh, 120, 255, THRESH_BINARY); //Threshold the gray.
 		Canny(imgG, imgCanny, 300, 550);
 		status = Center_Circle(imgCanny, imageOriginal);
 		if (status == 0)
@@ -337,23 +260,16 @@ int Recheck(Mat imageOriginal) {
 			rotate(imgRz, imgRz, ROTATE_180);
 			cvtColor(imgRz, imgG, COLOR_BGR2GRAY);
 			blur(imgG, imgG, Size(3, 3));
-			//threshold(imgG, imgTh, 120, 255, THRESH_BINARY); //Threshold the gray.
 			Canny(imgG, imgCanny, 300, 550);
 			status = Center_Circle(imgCanny, imageOriginal);
-
 		}
 	}
-
-
 	return status;
 }
 
 int main(int argc, const char* argv[]) {
-
-	Mat imgOri;
-	Mat imgRz, imgG, imgCn, imgMr, imgPoLog, imgPoLin, imgRePoLin, imgRePoLog;
-	int recheck = 0;
-
+	Mat imgOri, imgRz;
+	int result = 0;
 	string folder("img/*.jpg");
 	vector<String> fn;
 	glob(folder, fn, false);
@@ -369,14 +285,9 @@ int main(int argc, const char* argv[]) {
 		//Preprocessing
 		imgOri = imread(fn[i]);
 		resize(imgOri, imgRz, Size(), 0.5, 0.5); //Half Resize 1280*1040 to 640*520 pixcel.
-
-		recheck = Recheck(imgRz);
-		//imshow("Resize", imgRz);
-		cout << " Last status" << recheck << endl;
-
+		result = Canned_Lib(imgRz);  //Call function check lib problem.
 		waitKey(0);
 	}
 	waitKey(0);
 	return 0;
-
 }
