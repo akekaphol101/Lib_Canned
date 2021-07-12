@@ -62,7 +62,6 @@ void show_histogram(string const& name, Mat1b const& image)
 		}
 		float const height = cvRound(column_sum * hist_height / max);
 		line(hist_image, Point(i + 10, (hist_height - height) + 50), Point(i + 10, hist_height), Scalar::all(255));
-
 		// Check Low graph
 		if (height < height_low) {
 			height_low = height;
@@ -234,7 +233,7 @@ int Center_Circle(Mat image, Mat imageOriginal) {
 	
 	center = centers.at(largest_contour_index);
 	// Call Function make polar
-	NoY = Polar_Function(imageOriginal, center, radius[largest_contour_index]);
+	NoY = Polar_Function(imageOriginal, center, radius[largest_contour_index]);		//Call function for polar tranform.
 	largest_area = 0;  // Reset size of area.
 	return NoY;
 	}
@@ -254,14 +253,14 @@ int Canned_Lib(Mat imageOriginal) {
 		cvtColor(imageOriginal, imgG, COLOR_BGR2GRAY);
 		blur(imgG, imgG, Size(3, 3));
 		Canny(imgG, imgCanny, 300, 550);
-		status = Center_Circle(imgCanny, imageOriginal);
+		status = Center_Circle(imgCanny, imageOriginal);			//Call function for find circle and draw.
 		if (status == 0)
 		{
 			rotate(imgRz, imgRz, ROTATE_180);
 			cvtColor(imgRz, imgG, COLOR_BGR2GRAY);
 			blur(imgG, imgG, Size(3, 3));
 			Canny(imgG, imgCanny, 300, 550);
-			status = Center_Circle(imgCanny, imageOriginal);
+			status = Center_Circle(imgCanny, imageOriginal);		//Call function for find circle and draw.
 		}
 	}
 	return status;

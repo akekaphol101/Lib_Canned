@@ -15,14 +15,14 @@ C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(64,78): warning
           [
               _Tp=int
           ]
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(82,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(82,22): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(139,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(147,25): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(147,25): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(154,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(166,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(166,22): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(225,19): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(226,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(81,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(81,22): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(138,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(146,25): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(146,25): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(153,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(165,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(165,22): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(224,19): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Desktop\mydev\Lib_Canned\Lib_Canned\Lib_Canned.cpp(225,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   Lib_Canned.vcxproj -> C:\Users\User\Desktop\mydev\Lib_Canned\x64\Debug\Lib_Canned.exe
