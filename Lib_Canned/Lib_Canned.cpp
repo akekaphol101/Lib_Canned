@@ -13,13 +13,13 @@ using namespace cv;
 using namespace std;
 using namespace std::chrono;
 
-int largest_area = 0;
-int largest_contour_index = 0;
+int largest_area = 0;					//Parameter for value of area largest.
+int largest_contour_index = 0;			//Parameter for index of area largest.
 
-int P_backward = 7;		//Parameter for back column value size.
-int P_forward = 6;		//Parameter for next column value size.
-int P_divide = 13;		//Parameter for divide high average.
-int P_score = 5;		//Parameter for check crack lib.
+int P_backward = 7;						//Parameter for back column value size.
+int P_forward = 6;						//Parameter for next column value size.
+int P_divide = 13;						//Parameter for divide high average.
+int P_score = 5;						//Parameter for check crack lib.
 
 void show_histogram(string const& name, Mat1b const& image)
 {
@@ -279,6 +279,15 @@ int main(int argc, const char* argv[]) {
 	cout << "image in folder  " << count << endl;
 
 	//Main LooB.
+
+	largest_area = 0;
+	largest_contour_index = 0;
+
+	P_backward = 7;		//Parameter for back column value size.
+	P_forward = 6;		//Parameter for next column value size.
+	P_divide = 13;		//Parameter for divide high average.
+	P_score = 5;		//Parameter for check crack lib.
+
 	for (size_t i = 0; i < count; i++)
 	{
 		//Preprocessing
