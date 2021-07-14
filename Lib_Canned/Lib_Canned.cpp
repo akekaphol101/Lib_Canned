@@ -13,13 +13,13 @@ using namespace cv;
 using namespace std;
 using namespace std::chrono;
 
-int largest_area = 0;					//Parameter for value of area largest.
-int largest_contour_index = 0;			//Parameter for index of area largest.
+int P_largest_area = 0;						//Parameter for value of area largest.
+int P_largest_contour_index = 0;			//Parameter for index of area largest.
 
-int P_backward = 7;						//Parameter for back column value size.
-int P_forward = 6;						//Parameter for next column value size.
-int P_divide = 13;						//Parameter for divide high average.
-int P_score = 5;						//Parameter for check crack lib.
+int P_backward = 7;							//Parameter for back column value size.
+int P_forward = 6;							//Parameter for next column value size.
+int P_divide = 13;							//Parameter for divide high average.
+int P_score = 5;							//Parameter for check crack lib.
 
 void show_histogram(string const& name, Mat1b const& image)
 {
@@ -196,7 +196,7 @@ int Polar_Function(Mat image, Point2f center, float radiused) {
 	{
 		return YoN;
 	}
-	show_histogram("name", imgCrop);		//Call function histogram final.
+	show_histogram("Histogram image", imgCrop);		//Call function histogram final.
 	return 1;
 	}
 
@@ -219,22 +219,22 @@ int Center_Circle(Mat image, Mat imageOriginal) {
 		approxPolyDP(contours[i], contours_poly[i], 3, true);
 		minEnclosingCircle(contours_poly[i], centers[i], radius[i]);
 		double area = contourArea(contours[i]);  //  Find the area of contour.
-		if (area > largest_area)
+		if (area > P_largest_area)
 		{
-			largest_area = area;
-			largest_contour_index = i;               //Store the index of largest contour.
+			P_largest_area = area;
+			P_largest_contour_index = i;               //Store the index of largest contour.
 		}
 	 }
 
 	// Draw circle for show Edge of lib.
-	circle(imageOriginal, centers[largest_contour_index], (int)radius[largest_contour_index] + 120, Scalar(0, 0, 0), 215);
-	circle(imageOriginal, centers[largest_contour_index], (int)radius[largest_contour_index] - 18, Scalar(0, 0, 0), FILLED);
+	circle(imageOriginal, centers[P_largest_contour_index], (int)radius[P_largest_contour_index] + 120, Scalar(0, 0, 0), 215);
+	circle(imageOriginal, centers[P_largest_contour_index], (int)radius[P_largest_contour_index] - 18, Scalar(0, 0, 0), FILLED);
 	imshow("Original image", imageOriginal);
 	
-	center = centers.at(largest_contour_index);
+	center = centers.at(P_largest_contour_index);
 	// Call Function make polar
-	NoY = Polar_Function(imageOriginal, center, radius[largest_contour_index]);		//Call function for polar tranform.
-	largest_area = 0;  // Reset size of area.
+	NoY = Polar_Function(imageOriginal, center, radius[P_largest_contour_index]);		//Call function for polar tranform.
+	P_largest_area = 0;  // Reset size of area.
 	return NoY;
 	}
 
@@ -280,20 +280,20 @@ int main(int argc, const char* argv[]) {
 
 	//Main LooB.
 
-	largest_area = 0;
-	largest_contour_index = 0;
+	P_largest_area = 0;					//Parameter for value of area largest.
+	P_largest_contour_index = 0;		//Parameter for index of area largest.
 
-	P_backward = 7;		//Parameter for back column value size.
-	P_forward = 6;		//Parameter for next column value size.
-	P_divide = 13;		//Parameter for divide high average.
-	P_score = 5;		//Parameter for check crack lib.
+	P_backward = 7;						//Parameter for back column value size.
+	P_forward = 6;						//Parameter for next column value size.
+	P_divide = 13;						//Parameter for divide high average.
+	P_score = 5;						//Parameter for check crack lib.
 
 	for (size_t i = 0; i < count; i++)
 	{
 		//Preprocessing
 		imgOri = imread(fn[i]);
-		resize(imgOri, imgRz, Size(), 0.5, 0.5); //Half Resize 1280*1040 to 640*520 pixcel.
-		result = Canned_Lib(imgRz);  //Call function check lib problem.
+		resize(imgOri, imgRz, Size(), 0.5, 0.5);		//Half Resize 1280*1040 to 640*520 pixcel.
+		result = Canned_Lib(imgRz);						//Call function check lib problem.
 		waitKey(0);
 	}
 	waitKey(0);
